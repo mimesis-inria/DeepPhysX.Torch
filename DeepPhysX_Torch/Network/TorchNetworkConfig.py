@@ -26,6 +26,7 @@ class TorchNetworkConfig(BaseNetworkConfig):
     :param int which_network: If several networks in network_dir, load the specified one
     :param bool save_each_epoch: If True, network state will be saved at each epoch end; if False, network state
                                  will be saved at the end of the training
+    :param str data_type: Type of the training data
     :param Optional[float] lr: Learning rate
     :param bool require_training_stuff: If specified, loss and optimizer class can be not necessary for training
     :param Optional[Any] loss: Loss class
@@ -41,6 +42,7 @@ class TorchNetworkConfig(BaseNetworkConfig):
                  network_type: str = 'TorchNetwork',
                  which_network: int = 0,
                  save_each_epoch: bool = False,
+                 data_type: str = 'float64',
                  lr: Optional[float] = None,
                  require_training_stuff: bool = True,
                  loss: Optional[Any] = None,
@@ -55,6 +57,7 @@ class TorchNetworkConfig(BaseNetworkConfig):
                                    network_type=network_type,
                                    which_network=which_network,
                                    save_each_epoch=save_each_epoch,
+                                   data_type=data_type,
                                    lr=lr,
                                    require_training_stuff=require_training_stuff,
                                    loss=loss,
@@ -63,7 +66,8 @@ class TorchNetworkConfig(BaseNetworkConfig):
         # Change default config values for network only (configs for optimization and data_transformation are the same)
         self.network_config = self.make_config(config_name='network_config',
                                                network_name=network_name,
-                                               network_type=network_type)
+                                               network_type=network_type,
+                                               data_type=data_type)
 
     def create_network(self) -> NetworkType:
         """

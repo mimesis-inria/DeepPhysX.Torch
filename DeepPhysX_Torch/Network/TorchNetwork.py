@@ -1,5 +1,6 @@
 from typing import Dict
 import torch
+from numpy import ndarray
 from gc import collect as gc_collect
 from psutil import cpu_count
 from collections import namedtuple
@@ -96,21 +97,21 @@ class TorchNetwork(torch.nn.Module, BaseNetwork):
 
         return sum(p.numel() for p in self.parameters())
 
-    def transform_from_numpy(self, data: torch.Tensor, grad: bool = True) -> torch.Tensor:
+    def transform_from_numpy(self, data: ndarray, grad: bool = True) -> torch.Tensor:
         """
         | Transform and cast data from numpy to the desired tensor type.
 
-        :param torch.Tensor data: Array data to convert
+        :param ndarray data: Array data to convert
         :param bool grad: If True, gradient will record operations on this tensor
         :return: Converted tensor
         """
 
-        data = torch.as_tensor(data, dtype=torch.float, device=self.device)
+        data = torch.as_tensor(data.astype(self.config.data_type), device=self.device)
         if grad:
             data.requires_grad_()
         return data
 
-    def transform_to_numpy(self, data: torch.Tensor) -> torch.Tensor:
+    def transform_to_numpy(self, data: torch.Tensor) -> ndarray:
         """
         | Transform and cast data from tensor type to numpy.
 
@@ -118,7 +119,7 @@ class TorchNetwork(torch.nn.Module, BaseNetwork):
         :return: Converted array
         """
 
-        return data.cpu().detach().numpy()
+        return data.cpu().detach().numpy().astype(self.config.data_type)
 
     @staticmethod
     def print_architecture(architecture) -> str:

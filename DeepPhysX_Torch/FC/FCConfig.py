@@ -17,6 +17,7 @@ class FCConfig(TorchNetworkConfig):
     :param int which_network: If several networks in network_dir, load the specified one
     :param bool save_each_epoch: If True, network state will be saved at each epoch end; if False, network state
                                  will be saved at the end of the training
+    :param str data_type: Type of the training data
     :param Optional[float] lr: Learning rate
     :param bool require_training_stuff: If specified, loss and optimizer class can be not necessary for training
     :param Optional[Any] loss: Loss class
@@ -34,6 +35,7 @@ class FCConfig(TorchNetworkConfig):
                  network_name: str = "FCNetwork",
                  which_network: int = 0,
                  save_each_epoch: bool = False,
+                 data_type: str = 'float64',
                  lr: Optional[float] = None,
                  require_training_stuff: bool = True,
                  loss: Any = None,
@@ -51,6 +53,7 @@ class FCConfig(TorchNetworkConfig):
                                     network_type='FC',
                                     which_network=which_network,
                                     save_each_epoch=save_each_epoch,
+                                    data_type=data_type,
                                     require_training_stuff=require_training_stuff,
                                     lr=lr,
                                     loss=loss,
@@ -68,6 +71,7 @@ class FCConfig(TorchNetworkConfig):
         self.network_config = self.make_config(config_name='network_config',
                                                network_name=network_name,
                                                network_type='FC',
+                                               data_type=data_type,
                                                dim_output=dim_output,
                                                dim_layers=dim_layers,
                                                biases=biases)
