@@ -4,9 +4,9 @@ from torch.nn import Module, Conv2d, Conv3d, BatchNorm2d, BatchNorm3d, ReLU, Seq
     ConvTranspose2d, ConvTranspose3d
 from collections import namedtuple
 
-from DeepPhysX_Torch.Network.TorchNetwork import TorchNetwork
-from DeepPhysX_Torch.EncoderDecoder.EncoderDecoder import EncoderDecoder
-from DeepPhysX_Torch.UNet.utils import crop_and_merge
+from DeepPhysX.Torch.Network.TorchNetwork import TorchNetwork
+from DeepPhysX.Torch.EncoderDecoder.EncoderDecoder import EncoderDecoder
+from DeepPhysX.Torch.UNet.utils import crop_and_merge
 
 
 class UNetLayer(Module):

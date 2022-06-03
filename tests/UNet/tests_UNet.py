@@ -1,7 +1,7 @@
 from unittest import TestCase
 from torch import rand
 
-from DeepPhysX_Torch.UNet.UNetConfig import UNetConfig
+from DeepPhysX.Torch.UNet.UNetConfig import UNetConfig
 
 
 class TestUNet(TestCase):

@@ -5,7 +5,7 @@ from gc import collect as gc_collect
 from psutil import cpu_count
 from collections import namedtuple
 
-from DeepPhysX_Core.Network.BaseNetwork import BaseNetwork
+from DeepPhysX.Core.Network.BaseNetwork import BaseNetwork
 
 
 class TorchNetwork(torch.nn.Module, BaseNetwork):

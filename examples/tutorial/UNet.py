@@ -8,9 +8,9 @@ import torch
 from time import time
 
 # DeepPhysX's PyTorch imports
-from DeepPhysX_Torch.UNet.UNetConfig import UNetConfig
-from DeepPhysX_Torch.UNet.UnetDataTransformation import UnetDataTransformation as UNetDT
-from DeepPhysX_Torch.Network.TorchOptimization import TorchOptimization
+from DeepPhysX.Torch.UNet.UNetConfig import UNetConfig
+from DeepPhysX.Torch.UNet.UnetDataTransformation import UnetDataTransformation as UNetDT
+from DeepPhysX.Torch.Network.TorchOptimization import TorchOptimization
 
 
 def main():

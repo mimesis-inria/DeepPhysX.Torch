@@ -8,9 +8,9 @@ import torch
 from time import time
 
 # DeepPhysX's PyTorch imports
-from DeepPhysX_Torch.FC.FCConfig import FCConfig
-from DeepPhysX_Torch.Network.TorchDataTransformation import TorchDataTransformation as TorchDT
-from DeepPhysX_Torch.Network.TorchOptimization import TorchOptimization
+from DeepPhysX.Torch.FC.FCConfig import FCConfig
+from DeepPhysX.Torch.Network.TorchDataTransformation import TorchDataTransformation as TorchDT
+from DeepPhysX.Torch.Network.TorchOptimization import TorchOptimization
 
 
 def main():

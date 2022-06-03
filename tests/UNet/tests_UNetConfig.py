@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from DeepPhysX_Torch.UNet.UNetConfig import UNetConfig
+from DeepPhysX.Torch.UNet.UNetConfig import UNetConfig
 
 
 class TestUNetConfig(TestCase):

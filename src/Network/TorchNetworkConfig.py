@@ -1,10 +1,10 @@
 from typing import Any, Optional, Type, Union
 
-from DeepPhysX_Core.Network.BaseNetworkConfig import BaseNetworkConfig
-from DeepPhysX_Core.Network.BaseNetworkConfig import NetworkType, OptimizationType, DataTransformationType
-from DeepPhysX_Torch.Network.TorchDataTransformation import TorchDataTransformation
-from DeepPhysX_Torch.Network.TorchNetwork import TorchNetwork
-from DeepPhysX_Torch.Network.TorchOptimization import TorchOptimization
+from DeepPhysX.Core.Network.BaseNetworkConfig import BaseNetworkConfig
+from DeepPhysX.Core.Network.BaseNetworkConfig import NetworkType, OptimizationType, DataTransformationType
+from DeepPhysX.Torch.Network.TorchDataTransformation import TorchDataTransformation
+from DeepPhysX.Torch.Network.TorchNetwork import TorchNetwork
+from DeepPhysX.Torch.Network.TorchOptimization import TorchOptimization
 
 NetworkType = Union[NetworkType, TorchNetwork]
 OptimizationType = Union[OptimizationType, TorchOptimization]

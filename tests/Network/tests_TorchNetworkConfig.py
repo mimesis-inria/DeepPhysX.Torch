@@ -1,7 +1,7 @@
 from unittest import TestCase
 import os
 
-from DeepPhysX_Torch.Network.TorchNetworkConfig import TorchNetworkConfig, TorchNetwork, TorchOptimization, TorchDataTransformation
+from DeepPhysX.Torch.Network.TorchNetworkConfig import TorchNetworkConfig, TorchNetwork, TorchOptimization, TorchDataTransformation
 
 
 class TestTorchNetworkConfig(TestCase):

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from DeepPhysX_Torch.Network.TorchNetworkConfig import TorchNetworkConfig
+from DeepPhysX.Torch.Network.TorchNetworkConfig import TorchNetworkConfig
 
 
 class TestTorchOptimization(TestCase):

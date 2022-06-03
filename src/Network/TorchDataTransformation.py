@@ -2,7 +2,7 @@ from typing import Tuple, Optional
 from torch import Tensor
 from collections import namedtuple
 
-from DeepPhysX_Core.Network.DataTransformation import DataTransformation
+from DeepPhysX.Core.Network.DataTransformation import DataTransformation
 
 
 class TorchDataTransformation(DataTransformation):

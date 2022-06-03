@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from DeepPhysX_Torch.FC.FCConfig import FCConfig
+from DeepPhysX.Torch.FC.FCConfig import FCConfig
 
 
 class TestFCConfig(TestCase):

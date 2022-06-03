@@ -4,7 +4,7 @@ from torch import reshape, Tensor
 from numpy import asarray
 from collections import namedtuple
 
-from DeepPhysX_Torch.Network.TorchDataTransformation import TorchDataTransformation
+from DeepPhysX.Torch.Network.TorchDataTransformation import TorchDataTransformation
 
 
 class UnetDataTransformation(TorchDataTransformation):

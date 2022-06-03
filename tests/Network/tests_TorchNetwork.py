@@ -5,7 +5,7 @@ import os
 from numpy import array, float32, ndarray
 from numpy.random import random
 
-from DeepPhysX_Torch.Network.TorchNetworkConfig import TorchNetworkConfig
+from DeepPhysX.Torch.Network.TorchNetworkConfig import TorchNetworkConfig
 
 
 class TestTorchNetwork(TestCase):

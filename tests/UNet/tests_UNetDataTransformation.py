@@ -1,7 +1,7 @@
 from unittest import TestCase
 from torch import Tensor, rand, ones
 
-from DeepPhysX_Torch.UNet.UNetConfig import UNetConfig
+from DeepPhysX.Torch.UNet.UNetConfig import UNetConfig
 
 
 class TestUNetDataTransformation(TestCase):

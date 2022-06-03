@@ -1,7 +1,7 @@
 from typing import Any, Optional, Type, Union, List
 
-from DeepPhysX_Torch.Network.TorchNetworkConfig import TorchNetworkConfig, TorchDataTransformation, TorchOptimization
-from DeepPhysX_Torch.FC.FC import FC
+from DeepPhysX.Torch.Network.TorchNetworkConfig import TorchNetworkConfig, TorchDataTransformation, TorchOptimization
+from DeepPhysX.Torch.FC.FC import FC
 
 
 class FCConfig(TorchNetworkConfig):

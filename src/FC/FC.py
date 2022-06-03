@@ -2,7 +2,7 @@ import torch
 from torch.nn import Sequential, PReLU, Linear
 from collections import namedtuple
 
-from DeepPhysX_Torch.Network.TorchNetwork import TorchNetwork
+from DeepPhysX.Torch.Network.TorchNetwork import TorchNetwork
 
 
 class FC(TorchNetwork):

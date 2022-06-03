@@ -1,7 +1,7 @@
 from unittest import TestCase
 from torch import rand
 
-from DeepPhysX_Torch.FC.FCConfig import FCConfig, FC
+from DeepPhysX.Torch.FC.FCConfig import FCConfig, FC
 
 
 class TestFC(TestCase):

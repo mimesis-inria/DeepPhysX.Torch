@@ -2,7 +2,7 @@ from typing import Dict, Any
 from torch import Tensor
 from collections import namedtuple
 
-from DeepPhysX_Core.Network.BaseOptimization import BaseOptimization
+from DeepPhysX.Core.Network.BaseOptimization import BaseOptimization
 
 
 class TorchOptimization(BaseOptimization):

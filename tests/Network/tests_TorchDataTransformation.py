@@ -2,7 +2,7 @@ from unittest import TestCase
 from torch import Tensor, rand
 from numpy.random import random
 
-from DeepPhysX_Torch.Network.TorchNetworkConfig import TorchNetworkConfig
+from DeepPhysX.Torch.Network.TorchNetworkConfig import TorchNetworkConfig
 
 
 class TestTorchDataTransformation(TestCase):
