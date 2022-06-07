@@ -8,7 +8,7 @@ build/
 .idea/
 cmake-build-release/
 cmake-build-debug/
-DeepPhysX_Torch.egg-info/
+DeepPhysX.Torch.egg-info/
 dist/
 venv/
 sessions/
