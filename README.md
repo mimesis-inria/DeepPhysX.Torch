@@ -15,3 +15,15 @@ environment (refer to the [**documentation**](https://deepphysx.readthedocs.io) 
 ```bash
 $ pip install DeepPhysX.Torch
 ```
+
+If cloning sources, clone it in the same repository as other `DeepPhysX` packages.
+It must be cloned in a directory with the corresponding name as shown below:
+
+``` bash
+$ mkdir DeepPhysX
+$ cd DeepPhysX
+$ git clone https://github.com/mimesis-inria/DeepPhysX.git Core             # Clone default package
+$ git clone https://github.com/mimesis-inria/DeepPhysX.Torch.git Torch        # Clone AI package
+$ ls
+Core Torch
+```
