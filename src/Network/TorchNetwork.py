@@ -1,122 +1,136 @@
 from typing import Dict
-import torch
+from os import cpu_count
 from numpy import ndarray
+from torch import Tensor, device, set_num_threads, load, save, as_tensor
+from torch.nn import Module
+from torch.cuda import is_available, empty_cache
 from gc import collect as gc_collect
-from psutil import cpu_count
 from collections import namedtuple
 
 from DeepPhysX.Core.Network.BaseNetwork import BaseNetwork
 
 
-class TorchNetwork(torch.nn.Module, BaseNetwork):
-    """
-    | TorchNetwork is a network class to compute predictions from input data according to actual state.
+class TorchNetwork(Module, BaseNetwork):
 
-    :param namedtuple config: Namedtuple containing BaseNetwork parameters
-    """
+    def __init__(self,
+                 config: namedtuple):
+        """
+        TorchNetwork computes predictions from input data according to actual set of weights.
 
-    def __init__(self, config: namedtuple):
+        :param config: Set of TorchNetwork parameters.
+        """
 
-        torch.nn.Module.__init__(self)
+        Module.__init__(self)
         BaseNetwork.__init__(self, config)
 
-    def forward(self, input_data: torch.Tensor) -> torch.Tensor:
-        """
-        | Gives input_data as raw input to the neural network.
+        # Data fields
+        self.net_fields = ['input']
+        self.opt_fields = ['ground_truth']
+        self.pred_fields = ['prediction']
 
-        :param torch.Tensor input_data: Input tensor
-        :return: Network prediction
+    def forward(self,
+                input_data: Tensor) -> Tensor:
+        """
+        Compute a forward pass of the Network.
+
+        :param input_data: Input tensor.
+        :return: Network prediction.
         """
 
         raise NotImplementedError
 
     def set_train(self) -> None:
         """
-        | Set the Network in train mode (compute gradient).
+        Set the Network in train mode (compute gradient).
         """
 
         self.train()
 
     def set_eval(self) -> None:
         """
-         | Set the Network in eval mode (does not compute gradient).
+         Set the Network in eval mode (does not compute gradient).
          """
 
         self.eval()
 
     def set_device(self) -> None:
         """
-        | Set computer device on which Network's parameters will be stored and tensors will be computed.
+        Set computer device on which Network's parameters will be stored and tensors will be computed.
         """
 
-        if torch.cuda.is_available():
-            self.device = torch.device('cuda')
+        if is_available():
+            self.device = device('cuda')
             # Garbage collector run
             gc_collect()
-            torch.cuda.empty_cache()
+            empty_cache()
         else:
-            self.device = torch.device('cpu')
-            torch.set_num_threads(cpu_count(logical=True) - 1)
+            self.device = device('cpu')
+            set_num_threads(cpu_count() - 1)
         self.to(self.device)
         print(f"[{self.__class__.__name__}]: Device is {self.device}")
 
-    def load_parameters(self, path: str) -> None:
+    def load_parameters(self,
+                        path: str) -> None:
         """
-        | Load network parameter from path.
+        Load network parameter from path.
 
-        :param str path: Path to Network parameters to load
+        :param path: Path to Network parameters to load.
         """
 
-        self.load_state_dict(torch.load(path, map_location=self.device))
+        self.load_state_dict(load(path, map_location=self.device))
 
-    def get_parameters(self) -> Dict[str, torch.Tensor]:
+    def get_parameters(self) -> Dict[str, Tensor]:
         """
-        | Return the current state of Network parameters.
+        Return the current state of Network parameters.
 
-        :return: Network parameters
+        :return: Network parameters.
         """
 
         return self.state_dict()
 
-    def save_parameters(self, path: str) -> None:
+    def save_parameters(self,
+                        path: str) -> None:
         """
-        | Saves the network parameters to the path location.
+        Saves the network parameters to the path location.
 
-        :param str path: Path where to save the parameters.
+        :param path: Path where to save the parameters.
         """
 
         path = path + '.pth'
-        torch.save(self.state_dict(), path)
+        save(self.state_dict(), path)
 
     def nb_parameters(self) -> int:
         """
-        | Return the number of parameters of the network.
+        Return the number of parameters of the network.
 
-        :return: Number of parameters
+        :return: Number of parameters.
         """
 
         return sum(p.numel() for p in self.parameters())
 
-    def transform_from_numpy(self, data: ndarray, grad: bool = True) -> torch.Tensor:
+    def numpy_to_tensor(self,
+                        data: ndarray,
+                        grad: bool = True) -> Tensor:
         """
-        | Transform and cast data from numpy to the desired tensor type.
+        Transform and cast data from numpy to the desired tensor type.
 
-        :param ndarray data: Array data to convert
-        :param bool grad: If True, gradient will record operations on this tensor
-        :return: Converted tensor
+        :param data: Array data to convert.
+        :param grad: If True, gradient will record operations on this tensor.
+        :return: Converted tensor.
         """
 
-        data = torch.as_tensor(data.astype(self.config.data_type), device=self.device)
+        data = as_tensor(data.astype(self.config.data_type), device=self.device)
         if grad:
             data.requires_grad_()
         return data
 
-    def transform_to_numpy(self, data: torch.Tensor) -> ndarray:
+    def tensor_to_numpy(self,
+                        data: Tensor) -> ndarray:
         """
-        | Transform and cast data from tensor type to numpy.
+        |Transform and cast data from tensor type to numpy.
 
-        :param torch.Tensor data: Any to convert
-        :return: Converted array
+        :param data: Tensor to convert.
+        :return: Converted array.
         """
 
         return data.cpu().detach().numpy().astype(self.config.data_type)
@@ -126,7 +140,7 @@ class TorchNetwork(torch.nn.Module, BaseNetwork):
         """
         Format the network architecture string description.
 
-        :return: String containing the network architecture description
+        :return: String containing the network architecture description.
         """
 
         lines = architecture.splitlines()
@@ -136,9 +150,6 @@ class TorchNetwork(torch.nn.Module, BaseNetwork):
         return architecture
 
     def __str__(self):
-        """
-        :return: String containing information about the BaseNetwork object
-        """
 
         description = BaseNetwork.__str__(self)
         description += f"    Device: {self.device}\n"

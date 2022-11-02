@@ -3,7 +3,7 @@ from os.path import join
 
 PROJECT = 'DeepPhysX'
 PACKAGE = 'Torch'
-DEPENDENCIES = ['DeepPhysX', 'torch', 'psutil']
+DEPENDENCIES = ['DeepPhysX', 'torch']
 
 # Configure packages and subpackages list and dependencies list
 packages = [f'{PROJECT}.{PACKAGE}']

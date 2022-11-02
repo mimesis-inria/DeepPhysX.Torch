@@ -1,4 +1,4 @@
-import torch
+from torch import Tensor
 from torch.nn import Sequential, PReLU, Linear
 from collections import namedtuple
 
@@ -6,15 +6,21 @@ from DeepPhysX.Torch.Network.TorchNetwork import TorchNetwork
 
 
 class FC(TorchNetwork):
-    """
-    | Create a Fully Connected layers Neural Network Architecture.
 
-    :param namedtuple config: Namedtuple containing FC parameters
-    """
+    def __init__(self,
+                 config: namedtuple):
+        """
+        Create a Fully Connected layers Neural Network Architecture.
 
-    def __init__(self, config: namedtuple):
+        :param config: Set of FC parameters.
+        """
 
         TorchNetwork.__init__(self, config)
+
+        # Data fields
+        self.net_fields = ['input']
+        self.opt_fields = ['ground_truth']
+        self.pred_fields = ['prediction']
 
         # Convert biases to a List if not already one
         biases = None
@@ -24,6 +30,7 @@ class FC(TorchNetwork):
             biases = config.biases
         else:
             biases = [config.biases] * (len(self.config.dim_layers) - 1)
+
         # Init the layers
         self.layers = []
         for i, bias in enumerate(biases):
@@ -32,12 +39,13 @@ class FC(TorchNetwork):
         self.layers = self.layers[:-1]
         self.linear = Sequential(*self.layers)
 
-    def forward(self, input_data: torch.Tensor) -> torch.Tensor:
+    def forward(self,
+                input_data: Tensor) -> Tensor:
         """
-        | Gives input_data as raw input to the neural network.
+        Compute a forward pass of the Network.
 
-        :param torch.Tensor input_data: Input tensor
-        :return: Network prediction
+        :param input_data: Input tensor.
+        :return: Network prediction.
         """
 
         res = self.linear(input_data.view(input_data.shape[0], -1)).view(input_data.shape[0], -1,
@@ -45,9 +53,6 @@ class FC(TorchNetwork):
         return res
 
     def __str__(self):
-        """
-        :return: String containing information about the BaseNetwork object
-        """
 
         description = TorchNetwork.__str__(self)
         description += self.linear.__str__() + "\n"
