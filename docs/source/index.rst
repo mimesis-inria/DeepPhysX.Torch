@@ -13,12 +13,12 @@ TORCH
     * - | :ref:`fc.fc`
         | :ref:`fc.fcconfig`
 
-      - | :ref:`network.torchdatatransformation`
+      - | :ref:`network.torchtransformation`
         | :ref:`network.torchnetwork`
         | :ref:`network.torchnetworkconfig`
         | :ref:`network.torchoptimization`
 
-      - | :ref:`unet.unetdatatransformation`
+      - | :ref:`unet.unettransformation`
         | :ref:`unet.unet`
         | :ref:`unet.unetconfig`
 

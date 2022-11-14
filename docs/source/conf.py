@@ -24,7 +24,7 @@ for module in all_modules:
 
 # -- Project information -----------------------------------------------------
 
-project = 'DeepPhysX_Torch'
+project = 'DeepPhysX.Torch'
 copyright = '2022, Mimesis, Inria'
 author = 'Robin ENJALBERT, Alban ODOT, Stephane COTIN'
 
@@ -72,15 +72,3 @@ html_theme_options = {
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 html_css_files = ['theme.css']
-
-extlinks = {'Caribou': ('https://caribou.readthedocs.io/', None),
-            'CaribouI': ('https://caribou.readthedocs.io/en/latest/Building.html#', None),
-            'Numpy': ('https://numpy.org/', None),
-            'PyTorch': ('https://pytorch.org/', None),
-            'SOFA': ('https://www.sofa-framework.org/%s', None),
-            'SOFAI': ('https://www.sofa-framework.org/community/doc/getting-started/build/linux/', None),
-            'SP3': ('https://sofapython3.readthedocs.io/en/latest/', None),
-            'SP3I': ('https://sofapython3.readthedocs.io/en/latest/menu/Compilation.html', None),
-            'Tensorboard': ('https://www.tensorflow.org/tensorboard/', None),
-            'Vedo': ('https://vedo.embl.es/', None),
-            'VedoObject': ('https://vedo.embl.es/autodocs/content/vedo/%s', '%s')}

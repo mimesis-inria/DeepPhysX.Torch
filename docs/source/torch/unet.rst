@@ -23,13 +23,13 @@ Base:
 .. autoclass:: UNetConfig.UNetConfig
     :members:
 
-.. _unet.unetdatatransformation:
+.. _unet.unettransformation:
 
 UNetDataTransformation
 ----------------------
 
 Base:
-:py:class:`TorchDataTransformation.TorchDataTransformation`
+:py:class:`TorchTransformation.TorchTransformation`
 
-.. autoclass:: UnetDataTransformation.UnetDataTransformation
+.. autoclass:: UnetTransformation.UnetTransformation
     :members:

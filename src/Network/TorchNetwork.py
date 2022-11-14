@@ -127,7 +127,7 @@ class TorchNetwork(Module, BaseNetwork):
     def tensor_to_numpy(self,
                         data: Tensor) -> ndarray:
         """
-        |Transform and cast data from tensor type to numpy.
+        Transform and cast data from tensor type to numpy.
 
         :param data: Tensor to convert.
         :return: Converted array.
