@@ -34,4 +34,5 @@ setup(name=f'{PROJECT}.{PACKAGE}',
       packages=packages,
       package_dir=packages_dir,
       namespace_packages=[PROJECT],
-      install_requires=['DeepPhysX', 'torch'])
+      install_requires=['DeepPhysX >= 22.12',
+                        'torch >= 1.12.1'])
