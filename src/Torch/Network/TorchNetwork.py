@@ -1,5 +1,7 @@
 from typing import Dict
 from os import cpu_count
+
+import torch
 from numpy import ndarray
 from torch import Tensor, device, set_num_threads, load, save, as_tensor
 from torch.nn import Module
@@ -22,6 +24,12 @@ class TorchNetwork(Module, BaseNetwork):
 
         Module.__init__(self)
         BaseNetwork.__init__(self, config)
+
+        # Data type
+        if config.data_type == 'float64':
+            torch.set_default_dtype(torch.float64)
+        else:
+            torch.set_default_dtype(torch.float32)
 
         # Data fields
         self.net_fields = ['input']
