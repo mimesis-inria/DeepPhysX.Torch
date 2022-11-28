@@ -9,16 +9,12 @@ from time import time
 
 # DeepPhysX's PyTorch imports
 from DeepPhysX.Torch.UNet.UNetConfig import UNetConfig
-from DeepPhysX.Torch.UNet.UnetDataTransformation import UnetDataTransformation as UNetDT
-from DeepPhysX.Torch.Network.TorchOptimization import TorchOptimization
 
 
 def main():
 
     # UNet configuration
-    unet_config = UNetConfig(optimization_class=TorchOptimization,  # Class which defines loss and optimizes network
-                             data_transformation_class=UNetDT,      # Class which defines data transformations
-                             network_dir=None,                      # Path with a trained network to load parameters
+    unet_config = UNetConfig(network_dir=None,                      # Path with a trained network to load parameters
                              network_name="MyUnet",                 # Nickname of the network
                              which_network=0,                       # Instance index in case several where saved
                              save_each_epoch=False,                 # Save network parameters at each epoch end or not
@@ -55,18 +51,19 @@ def main():
 
     # Data transformations and forward pass of Unet on a random tensor
     t = torch.rand((1, 500), dtype=torch.float, device=unet.device)
+    data = {'input': t}
     start_time = time()
-    unet_input = data_transformation.transform_before_prediction(t)
-    unet_output = unet.forward(unet_input)
+    unet_input = data_transformation.transform_before_prediction(data)
+    unet_output = unet.predict(unet_input)
     unet_loss, _ = data_transformation.transform_before_loss(unet_output, None)
-    unet_pred = data_transformation.transform_before_apply(unet_loss)
+    unet_pred = data_transformation.transform_before_apply(unet_loss)['prediction']
     unet_apply = unet_pred.reshape(t.shape)
     end_time = time()
     print(f"Prediction time: {round(end_time - start_time, 5) * 1e3} ms")
     print("Tensor shape:", t.shape)
-    print("Input shape:", unet_input.shape)
-    print("Output shape:", unet_output.shape)
-    print("Loss shape:", unet_loss.shape)
+    print("Input shape:", unet_input['input'].shape)
+    print("Output shape:", unet_output['prediction'].shape)
+    print("Loss shape:", unet_loss['prediction'].shape)
     print("Prediction shape:", unet_pred.shape)
     print("Apply shape:", unet_apply.shape)
 
