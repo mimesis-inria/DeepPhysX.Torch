@@ -14,7 +14,7 @@ from os.path import abspath, join, pardir
 import sys
 
 # DeepPhysX root
-root = abspath(join(abspath(__file__), pardir, pardir, pardir, 'src'))
+root = abspath(join(abspath(__file__), pardir, pardir, pardir, 'src', 'Torch'))
 all_modules = ['Network', 'FC', 'UNet']
 
 # Import all modules
