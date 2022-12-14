@@ -9,15 +9,12 @@ from time import time
 
 # DeepPhysX's PyTorch imports
 from DeepPhysX.Torch.FC.FCConfig import FCConfig
-from DeepPhysX.Torch.Network.TorchDataTransformation import TorchDataTransformation as TorchDT
-from DeepPhysX.Torch.Network.TorchOptimization import TorchOptimization
 
 
 def main():
+
     # FC configuration
-    fc_config = FCConfig(optimization_class=TorchOptimization,  # Class which defines loss and optimizes network
-                         data_transformation_class=TorchDT,     # Class which defines data transformations
-                         network_dir=None,                      # Path with a trained network to load parameters
+    fc_config = FCConfig(network_dir=None,                      # Path with a trained network to load parameters
                          network_name="MyUnet",                 # Nickname of the network
                          which_network=0,                       # Instance index in case several where saved
                          save_each_epoch=False,                 # Save network parameters at each epoch end or not
@@ -47,18 +44,19 @@ def main():
 
     # Data transformations and forward pass of Unet on a random tensor
     t = torch.rand((1, 20, 3), dtype=torch.float, device=fc.device)
+    data = {'input': t}
     start_time = time()
-    fc_input = data_transformation.transform_before_prediction(t)
-    fc_output = fc.forward(fc_input)
+    fc_input = data_transformation.transform_before_prediction(data)
+    fc_output = fc.predict(fc_input)
     fc_loss, _ = data_transformation.transform_before_loss(fc_output, None)
-    fc_pred = data_transformation.transform_before_apply(fc_loss)
+    fc_pred = data_transformation.transform_before_apply(fc_loss)['prediction']
     fc_apply = fc_pred.reshape(t.shape)
     end_time = time()
     print(f"Prediction time: {round(end_time - start_time, 5) * 1e3} ms")
     print("Tensor shape:", t.shape)
-    print("Input shape:", fc_input.shape)
-    print("Output shape:", fc_output.shape)
-    print("Loss shape:", fc_loss.shape)
+    print("Input shape:", fc_input['input'].shape)
+    print("Output shape:", fc_output['prediction'].shape)
+    print("Loss shape:", fc_loss['prediction'].shape)
     print("Prediction shape:", fc_pred.shape)
     print("Apply shape:", fc_apply.shape)
 

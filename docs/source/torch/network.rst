@@ -1,15 +1,15 @@
 Network
 =======
 
-.. _network.torchdatatransformation:
+.. _network.torchtransformation:
 
-TorchDataTransformation
+TorchTransformation
 -----------------------
 
 Base:
 :py:class:`DataTransformation.DataTransformation`
 
-.. autoclass:: TorchDataTransformation.TorchDataTransformation
+.. autoclass:: TorchTransformation.TorchTransformation
     :members:
 
 .. _network.torchnetwork:

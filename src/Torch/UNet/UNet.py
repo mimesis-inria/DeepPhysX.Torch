@@ -1,5 +1,5 @@
 from typing import List, Tuple, Union
-import torch
+from torch import Tensor, zeros_like
 from torch.nn import Module, Conv2d, Conv3d, BatchNorm2d, BatchNorm3d, ReLU, Sequential, MaxPool2d, MaxPool3d, \
     ConvTranspose2d, ConvTranspose3d
 from collections import namedtuple
@@ -10,18 +10,18 @@ from DeepPhysX.Torch.UNet.utils import crop_and_merge
 
 
 class UNetLayer(Module):
-    """
-    | Create a UNet Layer.
-
-    :param int nb_input_channels: Number of channels in input data
-    :param int nb_output_channels: Number of channels in output data
-    :param namedtuple config: Namedtuple containing UNet parameters
-    """
 
     def __init__(self,
                  nb_input_channels: int,
                  nb_output_channels: int,
-                 config):
+                 config: namedtuple):
+        """
+        Create a UNet Layer.
+
+        :param nb_input_channels: Number of channels in input data.
+        :param nb_output_channels: Number of channels in output data.
+        :param config: Namedtuple containing UNet parameters.
+        """
 
         super().__init__()
 
@@ -52,25 +52,27 @@ class UNetLayer(Module):
         # Set the UNet layer
         self.unet_layer = Sequential(*layers)
 
-    def forward(self, input_data: torch.Tensor) -> torch.Tensor:
+    def forward(self,
+                input_data: Tensor) -> Tensor:
         """
-        | Gives input_data as raw input to the layer.
+        Compute a forward pass of the layer.
 
-        :param torch.Tensor input_data: Input tensor
-        :return: Forward pass result
+        :param input_data: Input tensor.
+        :return: Forward pass result.
         """
 
         return self.unet_layer(input_data)
 
 
 class UNet(TorchNetwork):
-    """
-    | Create a UNet Neural Network Architecture.
 
-    :param namedtuple config: Namedtuple containing UNet parameters
-    """
+    def __init__(self,
+                 config: namedtuple):
+        """
+        Create a UNet Neural Network Architecture.
 
-    def __init__(self, config: namedtuple):
+        :param config: Set of UNet parameters.
+        """
 
         TorchNetwork.__init__(self, config)
 
@@ -104,7 +106,8 @@ class UNet(TorchNetwork):
 
         # Set encoder - decoder architecture
         layers = down_layers + up_layers
-        architecture: EncoderDecoder = EncoderDecoder(layers=layers, nb_encoding_layers=config.nb_steps + 1)
+        architecture: EncoderDecoder = EncoderDecoder(layers=layers,
+                                                      nb_encoding_layers=config.nb_steps + 1)
 
         # Set the parts of the UNet
         self.down: Sequential = architecture.setupEncoder()
@@ -113,12 +116,13 @@ class UNet(TorchNetwork):
                                                                         out_channels=config.nb_output_channels,
                                                                         kernel_size=final_kernel_size)
 
-    def forward(self, input_data: torch.Tensor) -> torch.Tensor:
+    def forward(self,
+                input_data: Tensor) -> Tensor:
         """
-        | Gives input_data as raw input to the neural network.
+        Compute a forward pass of the Network.
 
-        :param torch.Tensor input_data: Input tensor
-        :return: Network prediction
+        :param input_data: Input tensor.
+        :return: Network prediction.
         """
 
         # Process down layers. Keep the outputs at each 'down' step to merge at same 'up' level.
@@ -129,15 +133,12 @@ class UNet(TorchNetwork):
         # Process up layers. Merge same level 'down' outputs.
         x = down_outputs.pop()
         for (up_conv_layer, unet_layer), down_output in zip(self.up, down_outputs[::-1]):
-            same_level_down_output = torch.zeros_like(down_output) if self.skip_merge else down_output
+            same_level_down_output = zeros_like(down_output) if self.skip_merge else down_output
             x = unet_layer(crop_and_merge(same_level_down_output, up_conv_layer(x)))
 
         return self.finalLayer(x)
 
     def __str__(self) -> str:
-        """
-        :return: String containing information about the BaseNetwork object
-        """
 
         description = TorchNetwork.__str__(self)
         description += f"    Number of dimensions: {self.config.nb_dims}\n"

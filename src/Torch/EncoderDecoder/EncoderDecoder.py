@@ -1,5 +1,4 @@
 from typing import Any
-
 from torch.nn import Sequential
 
 

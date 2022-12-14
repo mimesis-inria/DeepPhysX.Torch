@@ -1,49 +1,16 @@
-from typing import Any, List, Optional, Type, Union
+from typing import Any, List, Optional, Type
 
+from DeepPhysX.Core.Utils.configs import make_config
 from DeepPhysX.Torch.Network.TorchNetworkConfig import TorchNetworkConfig
 from DeepPhysX.Torch.Network.TorchOptimization import TorchOptimization
-from DeepPhysX.Torch.UNet.UnetDataTransformation import UnetDataTransformation
+from DeepPhysX.Torch.UNet.UnetTransformation import UnetTransformation
 from DeepPhysX.Torch.UNet.UNet import UNet
-from DeepPhysX.Torch.Network.TorchNetworkConfig import NetworkType, DataTransformationType
-
-NetworkType = Union[NetworkType, UNet]
-DataTransformationType = Union[DataTransformationType, UnetDataTransformation]
 
 
 class UNetConfig(TorchNetworkConfig):
-    """
-    | UNetConfig is a configuration class to parameterize and create UNet, TorchOptimization and UNetDataTransformation
-      for the NetworkManager.
-
-    :param Type[TorchOptimization] optimization_class: BaseOptimization class from which an instance will be created
-    :param Type[TorchDataTransformation] data_transformation_class: DataTransformation class from which an instance will
-                                                                    be created
-    :param Optional[str] network_dir: Name of an existing network repository
-    :param str network_name: Name of the network
-    :param int which_network: If several networks in network_dir, load the specified one
-    :param bool save_each_epoch: If True, network state will be saved at each epoch end; if False, network state
-                                 will be saved at the end of the training
-    :param str data_type: Type of the training data
-    :param Optional[float] lr: Learning rate
-    :param bool require_training_stuff: If specified, loss and optimizer class can be not necessary for training
-    :param Optional[Any] loss: Loss class
-    :param Optional[Any] optimizer: Network's parameters optimizer class
-
-    :param List[int] input_size: Size of the input
-    :param int nb_dims: Number of dimension of data
-    :param int nb_input_channels: Number of channels of the input layer
-    :param int nb_first_layer_channels: Number of channels of the first layer
-    :param int nb_output_channels: Number of channels of the output layer
-    :param int nb_steps: Number of steps of down layers / up layers
-    :param bool two_sublayers: Duplicate each layer or not
-    :param str border_mode: Zero-padding mode
-    :param bool skip_merge: Skip the crop step at each up layer or not
-    :param float data_scale: Scale to apply to data
-    """
 
     def __init__(self,
                  optimization_class: Type[TorchOptimization] = TorchOptimization,
-                 data_transformation_class: Type[UnetDataTransformation] = UnetDataTransformation,
                  network_dir: Optional[str] = None,
                  network_name: str = "UNetNetwork",
                  which_network: int = 0,
@@ -63,11 +30,38 @@ class UNetConfig(TorchNetworkConfig):
                  border_mode: str = 'valid',
                  skip_merge: bool = False,
                  data_scale: float = 1.):
+        """
+        UNetConfig is a configuration class to parameterize and create UNet, TorchOptimization and UNetTransformation
+        for the NetworkManager.
+
+        :param optimization_class: BaseOptimization class from which an instance will be created.
+        :param network_dir: Path to an existing network repository.
+        :param network_name: Name of the network.
+        :param which_network: If several networks in network_dir, load the specified one.
+        :param save_each_epoch: If True, network state will be saved at each epoch end; if False, network state
+                                will be saved at the end of the training.
+        :param data_type: Type of the training data.
+        :param lr: Learning rate.
+        :param require_training_stuff: If specified, loss and optimizer class can be not necessary for training.
+        :param loss: Loss class.
+        :param optimizer: Network's parameters optimizer class.
+
+        :param input_size: Size of the input.
+        :param nb_dims: Number of dimension of data.
+        :param nb_input_channels: Number of channels of the input layer.
+        :param nb_first_layer_channels: Number of channels of the first layer.
+        :param nb_output_channels: Number of channels of the output layer.
+        :param nb_steps: Number of steps of down layers / up layers.
+        :param two_sublayers: Duplicate each layer or not.
+        :param border_mode: Zero-padding mode.
+        :param skip_merge: Skip the crop step at each up layer or not.
+        :param data_scale: Scale to apply to data.
+        """
 
         TorchNetworkConfig.__init__(self,
                                     network_class=UNet,
                                     optimization_class=optimization_class,
-                                    data_transformation_class=data_transformation_class,
+                                    data_transformation_class=UnetTransformation,
                                     network_dir=network_dir,
                                     network_name=network_name,
                                     network_type='UNet',
@@ -111,25 +105,27 @@ class UNetConfig(TorchNetworkConfig):
             raise TypeError(f"[{name}] Wrong 'data_scale' type: float required, get {type(data_scale)}")
 
         # Define specific UNet configuration
-        self.network_config = self.make_config(config_name='network_config',
-                                               network_name=network_name,
-                                               network_type='UNet',
-                                               data_type=data_type,
-                                               nb_dims=nb_dims,
-                                               nb_input_channels=nb_input_channels,
-                                               nb_first_layer_channels=nb_first_layer_channels,
-                                               nb_output_channels=nb_output_channels,
-                                               nb_steps=nb_steps,
-                                               two_sublayers=two_sublayers,
-                                               border_mode=border_mode,
-                                               skip_merge=skip_merge)
+        self.network_config = make_config(configuration_object=self,
+                                          configuration_name='network_config',
+                                          network_name=network_name,
+                                          network_type='UNet',
+                                          data_type=data_type,
+                                          nb_dims=nb_dims,
+                                          nb_input_channels=nb_input_channels,
+                                          nb_first_layer_channels=nb_first_layer_channels,
+                                          nb_output_channels=nb_output_channels,
+                                          nb_steps=nb_steps,
+                                          two_sublayers=two_sublayers,
+                                          border_mode=border_mode,
+                                          skip_merge=skip_merge)
 
         # Define specific UNetDataTransformation config
-        self.data_transformation_config = self.make_config(config_name='data_transformation_config',
-                                                           input_size=input_size,
-                                                           nb_input_channels=nb_input_channels,
-                                                           nb_output_channels=nb_output_channels,
-                                                           nb_steps=nb_steps,
-                                                           two_sublayers=two_sublayers,
-                                                           border_mode=border_mode,
-                                                           data_scale=data_scale)
+        self.data_transformation_config = make_config(configuration_object=self,
+                                                      configuration_name='data_transformation_config',
+                                                      input_size=input_size,
+                                                      nb_input_channels=nb_input_channels,
+                                                      nb_output_channels=nb_output_channels,
+                                                      nb_steps=nb_steps,
+                                                      two_sublayers=two_sublayers,
+                                                      border_mode=border_mode,
+                                                      data_scale=data_scale)
