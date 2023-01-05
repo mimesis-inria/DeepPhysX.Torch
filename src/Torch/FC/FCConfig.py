@@ -23,7 +23,7 @@ class FCConfig(TorchNetworkConfig):
                  dim_layers: list = None,
                  biases: Union[List[bool], bool] = True):
         """
-        FCConfig is a configuration class to parameterize and create FC, TorchOptimization and TorchDataTransformation
+        FCConfig is a configuration class to parameterize and create FC, TorchOptimization and TorchTransformation
         for the NetworkManager.
 
         :param optimization_class: TorchOptimization class from which an instance will be created.

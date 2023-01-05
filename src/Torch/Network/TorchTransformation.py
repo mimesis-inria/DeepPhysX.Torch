@@ -2,10 +2,10 @@ from typing import Tuple, Optional, Dict
 from torch import Tensor
 from collections import namedtuple
 
-from DeepPhysX.Core.Network.BaseTransformation import BaseTransformation
+from DeepPhysX.Core.Network.DataTransformation import DataTransformation
 
 
-class TorchTransformation(BaseTransformation):
+class TorchTransformation(DataTransformation):
 
     def __init__(self, config: namedtuple):
         """
@@ -14,10 +14,10 @@ class TorchTransformation(BaseTransformation):
         :param config: Set of TorchTransformation parameters.
         """
 
-        BaseTransformation.__init__(self, config)
+        DataTransformation.__init__(self, config)
         self.data_type = Tensor
 
-    @BaseTransformation.check_type
+    @DataTransformation.check_type
     def transform_before_prediction(self,
                                     data_net: Dict[str, Tensor]) -> Dict[str, Tensor]:
         """
@@ -29,7 +29,7 @@ class TorchTransformation(BaseTransformation):
 
         return data_net
 
-    @BaseTransformation.check_type
+    @DataTransformation.check_type
     def transform_before_loss(self,
                               data_pred: Dict[str, Tensor],
                               data_opt: Optional[Dict[str, Tensor]] = None) -> Tuple[Dict[str, Tensor], Optional[Dict[str, Tensor]]]:
@@ -43,7 +43,7 @@ class TorchTransformation(BaseTransformation):
 
         return data_pred, data_opt
 
-    @BaseTransformation.check_type
+    @DataTransformation.check_type
     def transform_before_apply(self,
                                data_pred: Dict[str, Tensor]) -> Dict[str, Tensor]:
         """
