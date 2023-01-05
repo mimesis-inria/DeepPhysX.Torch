@@ -116,9 +116,9 @@ class TorchNetwork(Module, BaseNetwork):
 
         return sum(p.numel() for p in self.parameters())
 
-    def numpy_to_tensor(self,
-                        data: ndarray,
-                        grad: bool = True) -> Tensor:
+    def transform_from_numpy(self,
+                             data: ndarray,
+                             grad: bool = True) -> Tensor:
         """
         Transform and cast data from numpy to the desired tensor type.
 
@@ -132,8 +132,8 @@ class TorchNetwork(Module, BaseNetwork):
             data.requires_grad_()
         return data
 
-    def tensor_to_numpy(self,
-                        data: Tensor) -> ndarray:
+    def transform_to_numpy(self,
+                           data: Tensor) -> ndarray:
         """
         Transform and cast data from tensor type to numpy.
 
