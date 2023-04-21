@@ -16,7 +16,7 @@ class TorchNetworkConfig(BaseNetworkConfig):
                  network_name: str = 'Network',
                  network_type: str = 'TorchNetwork',
                  which_network: int = 0,
-                 save_each_epoch: bool = False,
+                 save_intermediate_state_every: int = 0,
                  data_type: str = 'float32',
                  lr: Optional[float] = None,
                  require_training_stuff: bool = True,
@@ -33,8 +33,7 @@ class TorchNetworkConfig(BaseNetworkConfig):
         :param network_name: Name of the network.
         :param network_type: Type of the network.
         :param which_network: If several networks in network_dir, load the specified one.
-        :param save_each_epoch: If True, network state will be saved at each epoch end; if False, network state
-                                will be saved at the end of the training.
+        :param save_intermediate_state_every: Save the current state of the Network periodically.
         :param data_type: Type of the training data.
         :param lr: Learning rate.
         :param require_training_stuff: If specified, loss and optimizer class can be not necessary for training.
@@ -50,7 +49,7 @@ class TorchNetworkConfig(BaseNetworkConfig):
                                    network_name=network_name,
                                    network_type=network_type,
                                    which_network=which_network,
-                                   save_each_epoch=save_each_epoch,
+                                   save_intermediate_state_every=save_intermediate_state_every,
                                    data_type=data_type,
                                    lr=lr,
                                    require_training_stuff=require_training_stuff,
